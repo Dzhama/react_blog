@@ -1,24 +1,37 @@
 'use strict';
 
+//  App object to store the Data
 var app = {
     title: 'Indicision App',
     subtitle: 'Put your life in the hands of a computer',
     options: []
 };
 
+// Form  Submit function 
 var onFormSubmit = function onFormSubmit(e) {
+    // prevemting default behavior
     e.preventDefault();
-
+    // taking input value
     var option = e.target.elements.option.value;
-
+    // if input is not empty pushing it to App Object. 
     if (option) {
         app.options.push(option);
+        // reseting input to an empty 
         e.target.elements.option.value = '';
     }
+    //rerendering the page.
     renderApp();
 };
 
+//removing all options 
+var removeAll = function removeAll() {
+    app.options = [];
+    renderApp();
+};
+
+// rendering App
 var renderApp = function renderApp() {
+    // Our template
     var template = React.createElement(
         'div',
         null,
@@ -43,18 +56,21 @@ var renderApp = function renderApp() {
             app.options.length
         ),
         React.createElement(
+            'button',
+            { onClick: removeAll },
+            'Remove All'
+        ),
+        React.createElement(
             'ol',
             null,
-            React.createElement(
-                'li',
-                null,
-                'Item One'
-            ),
-            React.createElement(
-                'li',
-                null,
-                'Item Two'
-            )
+            app.options.map(function (item) {
+                return React.createElement(
+                    'li',
+                    { key: item },
+                    ' ',
+                    item
+                );
+            })
         ),
         React.createElement(
             'form',
@@ -67,10 +83,10 @@ var renderApp = function renderApp() {
             )
         )
     );
-
+    //rendering to the Dom
     ReactDOM.render(template, appRoot);
 };
-
+// Choosing html tag where our app goes 
 var appRoot = document.getElementById("app");
-
+// rendering the App
 renderApp();

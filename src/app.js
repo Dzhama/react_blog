@@ -1,59 +1,71 @@
-//  App object to store the Data
-const app = {
-    title: 'Indicision App',
-    subtitle: 'Put your life in the hands of a computer',
-    options: []
-};
+class IndecisionApp extends React.Component {
+    render() {
+        const title = "Indicision";
+        const subtitle = "Put your life in a hands of a computer";
+        const options = ["Things One", "Things Two", "Things Three"];
 
-// Form  Submit function 
-const onFormSubmit = (e) => {
-    // prevemting default behavior
-    e.preventDefault();
-    // taking input value
-    const option = e.target.elements.option.value;
-    // if input is not empty pushing it to App Object. 
-    if(option) {
-        app.options.push(option);
-        // reseting input to an empty 
-        e.target.elements.option.value = '';
+        return (
+            <div>
+                <Header title={title} subtitle={subtitle}/>
+                <Action />
+                <Options options={options}/>
+                <AddOption />
+            </div>
+        )
     }
-    //rerendering the page.
-    renderApp();
 }
 
-//removing all options 
-const removeAll = () => {
-    app.options = [];
-    renderApp();
+class Header extends React.Component {
+    render () {
+        return  (
+            <div> 
+                <h1>{this.props.title}</h1>
+                <h2>{this.props.subtitle}</h2>
+            </div>
+        )
+    }
 }
 
-// rendering App
-const renderApp = () => {
-    // Our template
-    const template = (
-        <div>
-            <h1>{app.title}</h1>
-            {app.subtitle && <p>{app.subtitle}</p>}
-            <p>{app.options.length > 0 ? "Here are you options" : "No options"}</p>
-            <p>{app.options.length}</p>
-            <button onClick={removeAll}>Remove All</button>
-            <ol>
-                {
-                   app.options.map((item) => {
-                       return <li key={item}> {item}</li>
-                   }) 
-                }
-            </ol>
-            <form onSubmit={onFormSubmit}>
-                <input type="text" name="option"/>
-                <button>Add option</button>
-            </form>
-        </div>
-    );
-    //rendering to the Dom
-    ReactDOM.render(template, appRoot);
+class Action extends React.Component {
+    render() {
+        return (
+            <div>
+                <button>What should i do</button>
+            </div>
+        )
+    }
 }
-// Choosing html tag where our app goes 
-const appRoot = document.getElementById("app");
-// rendering the App
-renderApp();
+
+class Options extends React.Component {
+    render() {
+        return(
+            <div>
+               {this.props.options.map((option) => <Option key={option} optionText={option}/> )}
+               <Option />
+            </div>
+        )
+    }
+}
+
+class Option extends React.Component {
+    render() {
+        return (
+            <div>
+                {this.props.optionText}
+            </div>
+        )
+    }
+}
+
+class AddOption extends React.Component {
+    render() {
+        return (
+            <div>
+                Add Option Component will be add Here
+            </div>
+        )
+    }
+}
+
+
+ReactDOM.render(<IndecisionApp />, document.getElementById("app"));
